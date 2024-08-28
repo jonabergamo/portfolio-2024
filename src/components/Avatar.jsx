@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useFrame, useGraph } from '@react-three/fiber'
 import { useAnimations, useFBX, useGLTF } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
@@ -8,29 +8,49 @@ import * as THREE from "three";
 const modelUrl = '/models/66cce947c3b85821cf8acfe2.glb';
 
 export default function Avatar(props) {
-
   const group = useRef()
   const { scene } = useGLTF(modelUrl)
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
 
   const { animations: typingAnimation } = useFBX('animations/Typing.fbx')
-
   typingAnimation[0].name = "Typing"
-
   const { actions } = useAnimations(typingAnimation, group)
 
+  // State to hold the mouse position
+  const [mousePosition, setMousePosition] = useState(new THREE.Vector2());
+
+  useEffect(() => {
+    // Verifica se o objeto window está disponível
+    if (typeof window !== 'undefined') {
+      const handleMouseMove = (event) => {
+        // Atualiza a posição do mouse com coordenadas globais
+        setMousePosition(new THREE.Vector2(event.clientX, event.clientY));
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+
+      // Limpeza do listener de evento ao desmontar
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+  }, []);
+
+
   useFrame((state) => {
-
-    const target = new THREE.Vector3(state.mouse.x, state.mouse.y, 1);
+    // Convert mouse position to normalized device coordinates (-1 to +1)
+    const target = new THREE.Vector3(
+      (mousePosition.x / window.innerWidth) * 2 - 1,
+      -(mousePosition.y / window.innerHeight) * 2 + 1,
+      -1
+    );
     group.current.getObjectByName("Head").lookAt(target);
-
-  })
+  });
 
   useEffect(() => {
     actions['Typing'].reset().play()
-  }, [])
-
+  }, [actions])
 
   return (
     <group {...props} ref={group} dispose={null}>

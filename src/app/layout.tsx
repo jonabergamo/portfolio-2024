@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./Providers";
+import { Header } from "@/components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,10 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + "text-foreground bg-background"}>
         <Providers
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="discord-dark"
           enableSystem
           themes={[
             "light",
@@ -51,7 +52,8 @@ export default function RootLayout({
             "ayu-light-bordered",
           ]}
         >
-          <main className="flex overflow-x-hidden overflow-y-auto text-foreground bg-background h-screen w-screen ">
+          <main className="flex flex-col overflow-x-hidden overflow-y-auto text-foreground bg-background h-screen w-screen ">
+            <Header />
             {children}
           </main>
         </Providers>

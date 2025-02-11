@@ -9,9 +9,10 @@ export default function Canvas() {
       className="z-[100] h-[2000px] [mask-image:_linear-gradient(to_top,transparent_0,_black_20px,_black_calc(100%-50px),transparent_100%)]"
       shadows
       camera={{
-        fov: 14,
+        fov: 25,
         rotation: [0, 0, 0],
-        near: 0.001,
+        near: 0.1,
+        isObject3D: true,
       }}
     >
       <Suspense fallback={<CanvasLoader />}>

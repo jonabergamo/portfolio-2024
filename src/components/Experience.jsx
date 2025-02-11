@@ -1,21 +1,14 @@
-'use client'
+"use client";
 import { OrbitControls } from "@react-three/drei";
 import Avatar from "./Avatar";
-import Computer from './Computers';
+import Computer from "./Computers";
 
 export default function Experience() {
-
-
-
   return (
     <>
-      <OrbitControls />
-      <group rotation-y={285.8}>
-        <group position-y={-1}>
+      <group rotation-y={0}>
+        <group position-y={-1} position-z={-0.5}>
           <Avatar />
-        </group>
-        <group >
-          <Computer />
         </group>
       </group>
       <ambientLight intensity={1.5} />

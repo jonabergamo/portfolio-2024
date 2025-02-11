@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter } from "@/helper/capitalize";
 import { useTheme } from "next-themes";
-import React from "react";
+import React, { type ReactNode } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,49 +8,40 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { ScrollArea } from "./ui/scroll-area";
-import { Button } from "./ui/button";
-import { SwatchBook } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export default function ThemeChanger() {
+export default function ThemeChanger({ children }: { children: ReactNode }) {
   const { themes, setTheme, theme } = useTheme();
   return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost">
-            <SwatchBook />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-[1000]">
-          <ScrollArea className="h-[50vh]">
-            {themes.map((actual) => {
-              function capitalizeTheme(theme: string): string {
-                // Separar o nome e sobrenome e capitalizar
-                const parts = theme.split("-");
-                const capitalizedParts = parts.map((part) =>
-                  capitalizeFirstLetter(part)
-                );
-                return capitalizedParts.join(" ");
-              }
-              return (
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTheme(actual);
-                  }}
-                  key={actual}
-                  className={
-                    actual === theme
-                      ? "border-r-[4px] border-primary mr-1"
-                      : "mr-1"
-                  }
-                >
-                  {capitalizeTheme(actual)}
-                </DropdownMenuItem>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent className="z-[1000]">
+        <ScrollArea className="h-[50vh] pr-2">
+          {themes.map((actual) => {
+            function capitalizeTheme(theme: string): string {
+              const parts = theme.split("-");
+              const capitalizedParts = parts.map((part) =>
+                capitalizeFirstLetter(part)
               );
-            })}
-          </ScrollArea>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+              return capitalizedParts.join(" ");
+            }
+            return (
+              <DropdownMenuItem
+                onClick={() => {
+                  setTheme(actual);
+                }}
+                key={actual}
+                className={cn(
+                  "m-1",
+                  actual === theme ? "shadow shadow-primary" : "mr-1"
+                )}
+              >
+                {capitalizeTheme(actual)}
+              </DropdownMenuItem>
+            );
+          })}
+        </ScrollArea>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

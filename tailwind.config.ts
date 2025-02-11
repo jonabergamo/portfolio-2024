@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 const colors = require("tailwindcss/colors");
 module.exports = {
+  darkMode: ["class"],
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
@@ -13,11 +14,26 @@ module.exports = {
     extend: {
       animation: {
         "infinite-scroll": "infinite-scroll 25s linear infinite",
+        orbit: "orbit calc(var(--duration)*1s) linear infinite",
       },
       keyframes: {
         "infinite-scroll": {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-100%)" },
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(-100%)",
+          },
+        },
+        orbit: {
+          "0%": {
+            transform:
+              "rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg))",
+          },
+          "100%": {
+            transform:
+              "rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg))",
+          },
         },
       },
       colors: {
@@ -88,7 +104,6 @@ module.exports = {
             inverted: "hsl(var(--background))",
           },
         },
-        // dark mode
         "dark-tremor": {
           brand: {
             faint: "hsl(var(--primary))",
@@ -120,13 +135,11 @@ module.exports = {
         },
       },
       boxShadow: {
-        // light
         "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "tremor-card":
           "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
         "tremor-dropdown":
           "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-        // dark
         "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "dark-tremor-card":
           "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
@@ -139,10 +152,30 @@ module.exports = {
         "tremor-full": "9999px",
       },
       fontSize: {
-        "tremor-label": ["0.75rem", { lineHeight: "1rem" }],
-        "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
-        "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
-        "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
+        "tremor-label": [
+          "0.75rem",
+          {
+            lineHeight: "1rem",
+          },
+        ],
+        "tremor-default": [
+          "0.875rem",
+          {
+            lineHeight: "1.25rem",
+          },
+        ],
+        "tremor-title": [
+          "1.125rem",
+          {
+            lineHeight: "1.75rem",
+          },
+        ],
+        "tremor-metric": [
+          "1.875rem",
+          {
+            lineHeight: "2.25rem",
+          },
+        ],
       },
     },
   },
